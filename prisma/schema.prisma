@@ -67,9 +67,10 @@ model Product {
   name        String
   description String
   price       Float
+  image       String
+  stock       Int
   catalog     Catalog       @relation(fields: [catalogId], references: [id])
   catalogId   Int
-  category    String
   order       OrderItem?
   cart        ShoppingCart?
 }
