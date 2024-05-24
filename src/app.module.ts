@@ -8,7 +8,7 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { ShoppingCartsModule } from './modules/shopping-carts/shopping-carts.module';
 import { AdressesModule } from './modules/adresses/adresses.module';
 import { CatalogsModule } from './modules/catalogs/catalogs.module';
-import { ManagersModule } from './modules/managers/managers.module';
+import { ManagersModule } from './modules/managers/manages.module';
 import { ProductsModule } from './modules/products/products.module';
 import { OrderItemsModule } from './modules/order-items/order-items.module';
 

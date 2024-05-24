@@ -3,4 +3,6 @@ export interface addressDTO {
     street: string;
     city: string;
     state: string;
+    num: string;
+    complement: string;
 }

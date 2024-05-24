@@ -23,25 +23,27 @@ model Client {
   id        Int       @id @default(autoincrement())
   user      User      @relation(fields: [userId], references: [cpf])
   userId    String    @unique
-  address   Address   @relation(fields: [addressId], references: [cep], name: "ClientAddress")
-  addressId String    
+  address   Address   @relation(fields: [addressId], references: [id], name: "ClientAddress")
+  addressId Int    
   orders    Order[]
   cart      ShoppingCart[]
 }
 
 model Address {
-  cep      String    @id
-  street   String
-  city     String
-  state    String
-  clients  Client[]  @relation("ClientAddress")
-  orders   Order[]   @relation("OrderAddress")
+  id            Int       @id @default(autoincrement())
+  cep           String 
+  street        String
+  city          String
+  state         String
+  num           String
+  complement    String
+  clients       Client[]  @relation("ClientAddress")
+  orders        Order[]   @relation("OrderAddress")
 }
 
 model Admin {
-  id        Int       @id @default(autoincrement())
   user      User      @relation(fields: [userId], references: [cpf])
-  userId    String    @unique
+  userId    String    @id @unique
   Manages   Manages[]
 }
 
@@ -55,9 +57,8 @@ model Catalog {
 }
 
 model Manages {
-  id        Int     @id @default(autoincrement())
-  admin     Admin   @relation(fields: [adminId], references: [id])
-  adminId   Int
+  admin     Admin   @relation(fields: [adminId], references: [userId])
+  adminId   String     @id
   catalog   Catalog @relation(fields: [catalogId], references: [id])
   catalogId Int
 }
@@ -92,8 +93,8 @@ model Order {
   total       Float
   createdAt   DateTime @default(now())
   status      String
-  address     Address   @relation(fields: [addressId], references: [cep], name: "OrderAddress")
-  addressId   String    
+  address     Address   @relation(fields: [addressId], references: [id], name: "OrderAddress")
+  addressId   Int    
 }
 
 model ShoppingCart {
