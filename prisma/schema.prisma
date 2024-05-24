@@ -42,7 +42,6 @@ model Admin {
   id        Int       @id @default(autoincrement())
   user      User      @relation(fields: [userId], references: [cpf])
   userId    String    @unique
-  catalogs  Catalog[]
   Manages   Manages[]
 }
 
@@ -51,8 +50,6 @@ model Catalog {
   name        String
   description String
   createdAt   DateTime  @default(now())
-  admin       Admin     @relation(fields: [adminId], references: [id])
-  adminId     Int
   Manages     Manages[]
   products    Product[]
 }
