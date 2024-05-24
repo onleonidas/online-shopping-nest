@@ -1,9 +1,11 @@
-import { UserDTO } from "src/modules/users/dtos/user.dto";
+import { ApiProperty } from '@nestjs/swagger';
 
-export interface ClientDTO {
-    id: number;
-    userId: string;
-    addressId: number;
-    createdAt: Date;
-    updatedAt: Date;
+export class ClientDTO {
+
+  @ApiProperty({ description: 'CPF do usuário associado', example: '123.456.789-00' })
+  userId: string;
+
+  @ApiProperty({ description: 'ID do endereço associado', example: 1 })
+  addressId: number;
+
 }

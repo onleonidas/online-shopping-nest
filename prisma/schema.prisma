@@ -8,43 +8,42 @@ datasource db {
 }
 
 model User {
-  cpf        String    @id @unique
-  name       String
-  email      String    @unique
-  password   String
-  phone      String
-  client     Client?   
-  admin      Admin?    
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  cpf       String   @id @unique
+  name      String
+  email     String   @unique
+  password  String
+  phone     String
+  client    Client?
+  admin     Admin?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Client {
-  id        Int       @id @default(autoincrement())
-  user      User      @relation(fields: [userId], references: [cpf])
-  userId    String    @unique
-  address   Address   @relation(fields: [addressId], references: [id], name: "ClientAddress")
-  addressId Int    
-  orders    Order[]
-  cart      ShoppingCart[]
+  user      User           @relation(fields: [userId], references: [cpf])
+  userId    String         @id @unique
+  address   Address        @relation(fields: [addressId], references: [id], name: "ClientAddress")
+  addressId Int
+  orders    Order[]        @relation("OrderClient")
+  cart      ShoppingCart[] @relation("CartClient")
 }
 
 model Address {
-  id            Int       @id @default(autoincrement())
-  cep           String 
-  street        String
-  city          String
-  state         String
-  num           String
-  complement    String
-  clients       Client[]  @relation("ClientAddress")
-  orders        Order[]   @relation("OrderAddress")
+  id         Int      @id @default(autoincrement())
+  cep        String
+  street     String
+  city       String
+  state      String
+  num        String
+  complement String
+  clients    Client[] @relation("ClientAddress")
+  orders     Order[]  @relation("OrderAddress")
 }
 
 model Admin {
-  user      User      @relation(fields: [userId], references: [cpf])
-  userId    String    @id @unique
-  Manages   Manages[]
+  user    User      @relation(fields: [userId], references: [cpf])
+  userId  String    @id @unique
+  Manages Manages[]
 }
 
 model Catalog {
@@ -58,17 +57,17 @@ model Catalog {
 
 model Manages {
   admin     Admin   @relation(fields: [adminId], references: [userId])
-  adminId   String     @id
+  adminId   String  @id
   catalog   Catalog @relation(fields: [catalogId], references: [id])
   catalogId Int
 }
 
 model Product {
-  id          Int       @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   name        String
   description String
   price       Float
-  catalog     Catalog   @relation(fields: [catalogId], references: [id])
+  catalog     Catalog       @relation(fields: [catalogId], references: [id])
   catalogId   Int
   category    String
   order       OrderItem?
@@ -85,22 +84,22 @@ model OrderItem {
 }
 
 model Order {
-  id          Int      @id @default(autoincrement())
-  client      Client   @relation(fields: [clientId], references: [id])
-  clientId    Int
-  product     OrderItem[]
-  quantity    Int
-  total       Float
-  createdAt   DateTime @default(now())
-  status      String
-  address     Address   @relation(fields: [addressId], references: [id], name: "OrderAddress")
-  addressId   Int    
+  id        Int         @id @default(autoincrement())
+  client    Client      @relation(fields: [clientId], references: [userId], name: "OrderClient")
+  clientId  String
+  product   OrderItem[]
+  quantity  Int
+  total     Float
+  createdAt DateTime    @default(now())
+  status    String
+  address   Address     @relation(fields: [addressId], references: [id], name: "OrderAddress")
+  addressId Int
 }
 
 model ShoppingCart {
   id        Int     @id @default(autoincrement())
-  client    Client  @relation(fields: [clientId], references: [id])
-  clientId  Int
+  client    Client  @relation(fields: [clientId], references: [userId], name: "CartClient")
+  clientId  String
   product   Product @relation(fields: [productId], references: [id])
   productId Int     @unique
   quantity  Int
