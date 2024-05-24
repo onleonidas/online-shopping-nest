@@ -8,41 +8,42 @@ datasource db {
 }
 
 model User {
-  cpf      String  @id @unique
-  name     String
-  email    String  @unique
-  password String
-  phone    String
-  client   Client?
-  admin    Admin?
+  cpf        String    @id @unique
+  name       String
+  email      String    @unique
+  password   String
+  phone      String
+  client     Client?   
+  admin      Admin?    
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Client {
-  id      Int       @id @default(autoincrement())
-  user    User      @relation(fields: [userId], references: [cpf])
-  userId  String    @unique
-  address Address?
-  orders  Order[]
-  cart    ShoppingCart[]
+  id        Int       @id @default(autoincrement())
+  user      User      @relation(fields: [userId], references: [cpf])
+  userId    String    @unique
+  address   Address   @relation(fields: [addressId], references: [cep], name: "ClientAddress")
+  addressId String    
+  orders    Order[]
+  cart      ShoppingCart[]
 }
 
 model Address {
-  id       Int    @id @default(autoincrement())
+  cep      String    @id
   street   String
-  number   String
   city     String
   state    String
-  client   Client @relation(fields: [clientId], references: [id])
-  clientId Int    @unique
-  orders   Order[]
+  clients  Client[]  @relation("ClientAddress")
+  orders   Order[]   @relation("OrderAddress")
 }
 
 model Admin {
-  id       Int       @id @default(autoincrement())
-  user     User      @relation(fields: [userId], references: [cpf])
-  userId   String    @unique
-  catalogs Catalog[]
-  Manages  Manages[]
+  id        Int       @id @default(autoincrement())
+  user      User      @relation(fields: [userId], references: [cpf])
+  userId    String    @unique
+  catalogs  Catalog[]
+  Manages   Manages[]
 }
 
 model Catalog {
@@ -50,7 +51,6 @@ model Catalog {
   name        String
   description String
   createdAt   DateTime  @default(now())
-  category    String
   admin       Admin     @relation(fields: [adminId], references: [id])
   adminId     Int
   Manages     Manages[]
@@ -72,6 +72,7 @@ model Product {
   price       Float
   catalog     Catalog   @relation(fields: [catalogId], references: [id])
   catalogId   Int
+  category    String
   order       OrderItem?
   cart        ShoppingCart?
 }
@@ -94,9 +95,8 @@ model Order {
   total       Float
   createdAt   DateTime @default(now())
   status      String
-  address     Address  @relation(fields: [addressId], references: [id])
-  addressId   Int
-  paymentType String
+  address     Address   @relation(fields: [addressId], references: [cep], name: "OrderAddress")
+  addressId   String    
 }
 
 model ShoppingCart {
