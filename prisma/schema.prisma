@@ -72,7 +72,7 @@ model Product {
   catalog     Catalog       @relation(fields: [catalogId], references: [id])
   catalogId   Int
   order       OrderItem?
-  cart        ShoppingCart?
+  cart        CartItem?
 }
 
 model OrderItem {
@@ -96,11 +96,19 @@ model Order {
   addressId Int
 }
 
+model CartItem {
+  id        Int     @id @default(autoincrement())
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int     @unique
+  shoppingCart ShoppingCart @relation(fields: [shoppingCartId], references: [id])
+  shoppingCartId Int
+  quantity  Int
+}
+
+
 model ShoppingCart {
   id        Int     @id @default(autoincrement())
   client    Client  @relation(fields: [clientId], references: [userId], name: "CartClient")
   clientId  String
-  product   Product @relation(fields: [productId], references: [id])
-  productId Int     @unique
-  quantity  Int
+  product   CartItem[]
 }

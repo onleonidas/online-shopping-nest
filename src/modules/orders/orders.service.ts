@@ -12,8 +12,6 @@ export class OrdersService {
             data: order
         })
 
-        console.log(newOrder);
-
         return newOrder;
     }
 }

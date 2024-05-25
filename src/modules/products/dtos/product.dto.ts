@@ -14,9 +14,6 @@ export class CreateProductDto {
     @ApiProperty({description: 'Estoque do produto', example: 10})
     stock: number;
 
-    @ApiProperty({description: 'Categoria do produto', example: 1})
-    categoryId: number;
-
     @ApiProperty({description: 'Imagem do produto', example: 'https://example.com/image.jpg'})
     image: string;
 
