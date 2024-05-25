@@ -12,9 +12,10 @@ import { ManagersModule } from './modules/managers/manages.module';
 import { ProductsModule } from './modules/products/products.module';
 import { OrderItemsModule } from './modules/order-items/order-items.module';
 import { CartItemsModule } from './modules/cart-items/cart-items.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UsersModule, ClientsModule, AdminsModule, OrdersModule, ShoppingCartsModule, AdressesModule, CatalogsModule, ManagersModule, ProductsModule, OrderItemsModule, CartItemsModule],
+  imports: [UsersModule, ClientsModule, AdminsModule, OrdersModule, ShoppingCartsModule, AdressesModule, CatalogsModule, ManagersModule, ProductsModule, OrderItemsModule, CartItemsModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
