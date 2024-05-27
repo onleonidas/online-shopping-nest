@@ -20,7 +20,7 @@ import { JwtModule } from '@nestjs/jwt';
 
 
 @Module({
-  imports: [UsersModule, ClientsModule, AdminsModule, JwtModule, PrismaModule, AuthModule, OrdersModule, ShoppingCartsModule, AdressesModule, ProductsModule, OrderItemsModule, CartItemsModule, CategoriesModule],
+  imports: [UsersModule, ClientsModule, ShoppingCartsModule, AdminsModule, JwtModule, PrismaModule, AuthModule, OrdersModule, ShoppingCartsModule, AdressesModule, ProductsModule, OrderItemsModule, CartItemsModule, CategoriesModule],
   controllers: [AppController],
   providers: [AppService,
     {
