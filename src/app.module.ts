@@ -13,12 +13,14 @@ import { CartItemsModule } from './modules/cart-items/cart-items.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from './authorization/roles.guard';
+import { RolesGuard } from './auth/roles.guard';
 import { AuthGuard } from './auth/auth.guard';
+import { PrismaModule } from './database/prisma.module';
+import { JwtModule } from '@nestjs/jwt';
 
 
 @Module({
-  imports: [UsersModule, ClientsModule, AdminsModule, AuthModule, OrdersModule, ShoppingCartsModule, AdressesModule, ProductsModule, OrderItemsModule, CartItemsModule, CategoriesModule],
+  imports: [UsersModule, ClientsModule, AdminsModule, JwtModule, PrismaModule, AuthModule, OrdersModule, ShoppingCartsModule, AdressesModule, ProductsModule, OrderItemsModule, CartItemsModule, CategoriesModule],
   controllers: [AppController],
   providers: [AppService,
     {

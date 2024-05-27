@@ -3,9 +3,8 @@ import { ProductsService } from './products.service';
 import { Body, Post } from '@nestjs/common';
 import { CreateProductDto } from './dtos/product.dto';
 import { ApiBody, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
-import { Roles } from 'src/authorization/roles.decorator';
-import { Role } from 'src/authorization/enums/role.enum';
-import { RolesGuard } from 'src/authorization/roles.guard';
+import { Roles } from 'src/auth/roles.decorator';
+import { RolesGuard } from 'src/auth/roles.guard';
 
 @Controller('products')
 export class ProductsController {
@@ -25,6 +24,8 @@ export class ProductsController {
 
   @Delete('delete/:id')
   @ApiOperation({ summary: 'Deletar um produto' })
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
   @ApiResponse({
     status: 204,
     description: 'O produto foi deletado com sucesso',
@@ -36,6 +37,8 @@ export class ProductsController {
 
   @Put('update/:id')
   @ApiOperation({ summary: 'Atualizar um produto' })
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
   @ApiBody({ type: CreateProductDto })
   @ApiResponse({
     status: 200,

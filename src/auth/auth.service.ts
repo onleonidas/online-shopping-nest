@@ -1,41 +1,42 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UsersService } from 'src/modules/users/users.service';
-import { SignInDto } from './dtos/signIn.dto';
+import { Injectable, UnauthorizedException } from '@nestjs/common';;
 import { JwtService } from '@nestjs/jwt';
+import { UsersService } from 'src/modules/users/users.service';
+import { PrismaService } from 'src/database/prisma.service';
 import * as bcrypt from 'bcrypt';
-
-export interface UserContext {
-  cpf: string;
-  email: string;
-  roles: string;
-}
-
 
 @Injectable()
 export class AuthService {
+  constructor(
+    private prisma: PrismaService,
+    private jwtService: JwtService,
+    private usersService: UsersService,
+  ) {}
 
-
-  constructor(private usersService: UsersService, private jwtService: JwtService) {}
-
-  async signIn(data: SignInDto): Promise<{access_token: string, user: UserContext}> {
-    const user = await this.usersService.findByEmail(data.email);
+  async validateUser(email: string, password: string) {
+    const user = await this.prisma.user.findUnique({ where: { email } });
     if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+    return user;
+  }
+
+  async login(user: any) {
+
+    const currentUser = await this.usersService.findByEmail(user.email);
+    if (!currentUser) {
       throw new UnauthorizedException('User not found');
     }
 
-    const isPasswordValid = await bcrypt.compare(data.password, user.password);
-    if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid password');
-    }
-
-    const roles = await this.usersService.getUserRoles(user.cpf);
-
-    const userContext = { cpf: user.cpf, email: user.email, roles: roles };
-
-    console.log('teste', roles);
-
-    const payload = { sub: user.cpf, email: user.email, roles: roles};
-    const accessToken = await this.jwtService.signAsync(payload);
-    return {access_token: accessToken, user: userContext};
+    console.log('user', user);
+    const payload = { username: currentUser.email, sub: currentUser.cpf, roles: currentUser.roles};
+    console.log('payloard', payload);
+    return {
+      access_token: this.jwtService.sign(payload),
+      role: currentUser.roles,
+    };
   }
 }
