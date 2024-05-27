@@ -7,16 +7,24 @@ import { AdminsModule } from './modules/admins/admins.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { ShoppingCartsModule } from './modules/shopping-carts/shopping-carts.module';
 import { AdressesModule } from './modules/adresses/adresses.module';
-import { CatalogsModule } from './modules/catalogs/catalogs.module';
-import { ManagersModule } from './modules/managers/manages.module';
 import { ProductsModule } from './modules/products/products.module';
 import { OrderItemsModule } from './modules/order-items/order-items.module';
 import { CartItemsModule } from './modules/cart-items/cart-items.module';
+import { CategoriesModule } from './modules/categories/categories.module';
 import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './authorization/roles.guard';
+import { AuthGuard } from './auth/auth.guard';
+
 
 @Module({
-  imports: [UsersModule, ClientsModule, AdminsModule, OrdersModule, ShoppingCartsModule, AdressesModule, CatalogsModule, ManagersModule, ProductsModule, OrderItemsModule, CartItemsModule, AuthModule],
+  imports: [UsersModule, ClientsModule, AdminsModule, AuthModule, OrdersModule, ShoppingCartsModule, AdressesModule, ProductsModule, OrderItemsModule, CartItemsModule, CategoriesModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    }, AuthGuard,
+  ],
 })
 export class AppModule {}

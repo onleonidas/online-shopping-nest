@@ -7,10 +7,10 @@ export class ClientsService {
 
     constructor (private prisma: PrismaService) {}
 
-    async create(user: ClientDTO) {
+    async create(client: ClientDTO) {
         const userExists = await this.prisma.user.findUnique({
             where: {
-                cpf: user.userId
+                cpf: client.userId
             },
         })
         if (!userExists) {
@@ -18,7 +18,12 @@ export class ClientsService {
         }
        
         const newClient = await this.prisma.client.create({
-            data: user,
+            data: client,
+        });
+
+        await this.prisma.user.update({
+            where: { cpf: client.userId },
+            data: { roles: "CLIENT" },
         });
 
         return newClient;

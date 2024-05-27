@@ -15,6 +15,7 @@ model User {
   phone     String
   client    Client?
   admin     Admin?
+  roles      String   @default("USER")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -43,45 +44,38 @@ model Address {
 model Admin {
   user    User      @relation(fields: [userId], references: [cpf])
   userId  String    @id @unique
-  Manages Manages[]
 }
 
-model Catalog {
+model Category {
   id          Int       @id @default(autoincrement())
   name        String
-  description String
-  createdAt   DateTime  @default(now())
-  Manages     Manages[]
   products    Product[]
-}
-
-model Manages {
-  admin     Admin   @relation(fields: [adminId], references: [userId])
-  adminId   String  @id
-  catalog   Catalog @relation(fields: [catalogId], references: [id])
-  catalogId Int
+  orderItems  OrderItem[]
 }
 
 model Product {
-  id          Int           @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   name        String
   description String
   price       Float
   image       String
   stock       Int
-  catalog     Catalog       @relation(fields: [catalogId], references: [id])
-  catalogId   Int
-  order       OrderItem?
+  category    Category   @relation(fields: [categoryId], references: [id])
+  categoryId  Int        @default(0)
   cart        CartItem?
 }
 
 model OrderItem {
-  id        Int     @id @default(autoincrement())
-  order     Order   @relation(fields: [orderId], references: [id])
-  orderId   Int
-  product   Product @relation(fields: [productId], references: [id])
-  productId Int     @unique
-  quantity  Int
+  id                  Int    @id @default(autoincrement())
+  order               Order  @relation(fields: [orderId], references: [id])
+  orderId             Int
+  product_quantity    Int
+  product_name        String
+  product_price       Float
+  product_image       String
+  product_description String
+  category    Category   @relation(fields: [categoryId], references: [id])
+  categoryId  Int     @default(0)
 }
 
 model Order {
@@ -97,18 +91,17 @@ model Order {
 }
 
 model CartItem {
-  id        Int     @id @default(autoincrement())
-  product   Product @relation(fields: [productId], references: [id])
-  productId Int     @unique
-  shoppingCart ShoppingCart @relation(fields: [shoppingCartId], references: [id])
+  id             Int          @id @default(autoincrement())
+  product        Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId      Int          @unique
+  shoppingCart   ShoppingCart @relation(fields: [shoppingCartId], references: [id])
   shoppingCartId Int
-  quantity  Int
+  quantity       Int
 }
 
-
 model ShoppingCart {
-  id        Int     @id @default(autoincrement())
-  client    Client  @relation(fields: [clientId], references: [userId], name: "CartClient")
-  clientId  String
-  product   CartItem[]
+  id       Int        @id @default(autoincrement())
+  client   Client     @relation(fields: [clientId], references: [userId], name: "CartClient")
+  clientId String
+  product  CartItem[]
 }

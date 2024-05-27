@@ -5,6 +5,18 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
+    async getUserRoles(id: any) {
+      const role = await this.prisma.user.findUnique({
+        where: {
+          cpf: id
+        },
+        select: {
+          roles: true
+        }
+      })
+
+      return role.roles;
+    }
     
     constructor (private prisma: PrismaService) {}
     

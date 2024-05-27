@@ -6,4 +6,5 @@ export class SignInDto {
 
     @ApiProperty({ example: '123456', description: 'Senha' })
     password: string;
+
 }
