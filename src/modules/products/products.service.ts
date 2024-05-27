@@ -67,4 +67,39 @@ export class ProductsService {
 
     return updatedProduct;
   }
+
+  async findByName(name: string) {
+    return this.prisma.product.findMany({
+      where: {
+        name: {
+          contains: name,
+        },
+      },
+    });
+  }
+
+  async findByCategoryId(categoryId: number) {
+    return this.prisma.product.findMany({
+      where: {
+        categoryId,
+      },
+    });
+  }
+
+  async findByNameAndCategoryId(name: string, categoryId: number) {
+    return this.prisma.product.findMany({
+      where: {
+        AND: [
+          {
+            name: {
+              contains: name,
+            },
+          },
+          {
+            categoryId,
+          },
+        ],
+      },
+    });
+  }
 }

@@ -1,19 +1,17 @@
-import { Controller, Delete, Param, ParseIntPipe, Put, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, ParseIntPipe, Put, Query, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Body, Post } from '@nestjs/common';
 import { CreateProductDto } from './dtos/product.dto';
-import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Roles } from 'src/authorization/roles.decorator';
 import { Role } from 'src/authorization/enums/role.enum';
 import { RolesGuard } from 'src/authorization/roles.guard';
 
 @Controller('products')
-@UseGuards(RolesGuard)
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
-  @Roles(Role.Admin)
   @ApiOperation({ summary: 'Criar um novo produto' })
   @ApiBody({ type: CreateProductDto })
   @ApiResponse({
@@ -26,7 +24,6 @@ export class ProductsController {
   }
 
   @Delete('delete/:id')
-  @Roles(Role.Admin)
   @ApiOperation({ summary: 'Deletar um produto' })
   @ApiResponse({
     status: 204,
@@ -48,6 +45,22 @@ export class ProductsController {
   async update(@Param('id', ParseIntPipe) id: number, @Body() updateProductDto: CreateProductDto) {
     console.log('Updating product with ID:', id);
     return this.productsService.update(id, updateProductDto);
+  }
+
+  @Get('find')
+  @ApiOperation({ summary: 'Encontrar produtos com base em critérios' })
+  @ApiQuery({ name: 'name', required: false, description: 'Nome do produto' })
+  @ApiQuery({ name: 'category', required: false, description: 'Categoria do produto' })
+  async find(@Query('name') name?: string, @Query('category') category?: number) {
+    if (name && category) {
+      return this.productsService.findByNameAndCategoryId(name, category);
+    } else if (name) {
+      return this.productsService.findByName(name);
+    } else if (category) {
+      return this.productsService.findByCategoryId(category);
+    } else {
+      return this.productsService.findAll();
+    }
   }
 
 
