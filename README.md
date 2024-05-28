@@ -36,7 +36,8 @@ $ npm run start:prod
 $ npm run test
 ```
 
-```Swagger Api Doc
+## Swagger Api Doc
+```bash
 # npm run start:dev
 $ and open http://localhost:3000/api-docs
 ````
