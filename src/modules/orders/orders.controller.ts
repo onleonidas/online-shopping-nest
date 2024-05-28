@@ -1,8 +1,9 @@
 import { Body, Controller, Post, Put } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto, OrderDTO } from './dtos/order.dto';
-import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Pedidos')
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
@@ -19,7 +20,6 @@ export class OrdersController {
     return this.ordersService.create(order);
   }
 
-
   @Put('finalizar-pedido')
   @ApiOperation({ summary: 'Finalizar um pedido/compra' })
   @ApiBody({ type: OrderDTO })
@@ -29,10 +29,6 @@ export class OrdersController {
     type: OrderDTO,
   })
   updateStatus(@Body() order: OrderDTO) {
-    console.log(order);
     return this.ordersService.updateStatus(order);
   }
-
-  
-
 }

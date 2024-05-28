@@ -7,10 +7,16 @@ export class UserDTO {
   @ApiProperty({ description: 'Nome do usuário', example: 'John Doe' })
   name: string;
 
-  @ApiProperty({ description: 'Email do usuário', example: 'john.doe@example.com' })
+  @ApiProperty({
+    description: 'Email do usuário',
+    example: 'john.doe@example.com',
+  })
   email: string;
 
-  @ApiProperty({ description: 'Telefone do usuário', example: '(11) 98765-4321' })
+  @ApiProperty({
+    description: 'Telefone do usuário',
+    example: '(11) 98765-4321',
+  })
   phone: string;
 
   @ApiProperty({ description: 'Senha do usuário', example: 'strongpassword' })

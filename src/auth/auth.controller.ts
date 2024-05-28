@@ -1,9 +1,9 @@
-import { Body, Controller, Post, HttpCode, HttpStatus, UseGuards, Get } from '@nestjs/common';
+import { Body, Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dtos/signIn.dto';
-import { AuthGuard } from './auth.guard';
-import { ApiBody, ApiOperation } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Usuários')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -13,7 +13,6 @@ export class AuthController {
   @ApiOperation({ summary: 'Autenticar um usuário' })
   @ApiBody({ type: SignInDto })
   signIn(@Body() user: SignInDto) {
-    console.log('User:', user);
     return this.authService.login(user);
   }
 }

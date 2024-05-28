@@ -19,13 +19,30 @@ import { PrismaModule } from './database/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [UsersModule, ClientsModule, ShoppingCartsModule, AdminsModule, JwtModule, PrismaModule, AuthModule, OrdersModule, ShoppingCartsModule, AdressesModule, ProductsModule, OrderItemsModule, CartItemsModule, CategoriesModule],
+  imports: [
+    UsersModule,
+    ClientsModule,
+    ShoppingCartsModule,
+    AdminsModule,
+    JwtModule,
+    PrismaModule,
+    AuthModule,
+    OrdersModule,
+    ShoppingCartsModule,
+    AdressesModule,
+    ProductsModule,
+    OrderItemsModule,
+    CartItemsModule,
+    CategoriesModule,
+  ],
   controllers: [AppController],
-  providers: [AppService,
+  providers: [
+    AppService,
     {
       provide: APP_GUARD,
       useClass: RolesGuard,
-    }, AuthGuard,
+    },
+    AuthGuard,
   ],
 })
 export class AppModule {}

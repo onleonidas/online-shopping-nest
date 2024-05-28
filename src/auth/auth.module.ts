@@ -9,7 +9,6 @@ import { PrismaService } from 'src/database/prisma.service';
 import { LocalStrategy } from './local.strategy';
 import { UsersService } from 'src/modules/users/users.service';
 
-
 @Module({
   imports: [
     PassportModule,
@@ -18,7 +17,13 @@ import { UsersService } from 'src/modules/users/users.service';
       signOptions: { expiresIn: '1d' },
     }),
   ],
-  providers: [AuthService, JwtStrategy, LocalStrategy, PrismaService, UsersService],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    LocalStrategy,
+    PrismaService,
+    UsersService,
+  ],
   controllers: [AuthController],
 })
 export class AuthModule {}

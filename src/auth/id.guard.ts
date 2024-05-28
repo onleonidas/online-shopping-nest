@@ -7,10 +7,10 @@ export class UserIdGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
-    const user = request.user; 
+    const user = request.user;
 
     if (user) {
-      request.body.userId = user.id; 
+      request.body.userId = user.id;
       return true;
     }
     return false;

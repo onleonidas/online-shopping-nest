@@ -47,7 +47,6 @@ export class ProductsService {
   }
 
   async update(id: number, updateProductDto: CreateProductDto) {
-    console.log('Updating product with ID:', id);
     const findProduct = await this.prisma.product.findFirst({
       where: {
         id,

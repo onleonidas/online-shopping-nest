@@ -1,17 +1,37 @@
-import { Controller, Delete, Get, Param, ParseIntPipe, Put, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Body, Post } from '@nestjs/common';
 import { CreateProductDto } from './dtos/product.dto';
-import { ApiBody, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Roles } from 'src/auth/roles.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
 
+@ApiTags('Produtos')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
   @ApiOperation({ summary: 'Criar um novo produto' })
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
+  @ApiBearerAuth('ADMIN')
   @ApiBody({ type: CreateProductDto })
   @ApiResponse({
     status: 201,
@@ -26,12 +46,12 @@ export class ProductsController {
   @ApiOperation({ summary: 'Deletar um produto' })
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
+  @ApiBearerAuth('ADMIN')
   @ApiResponse({
     status: 204,
     description: 'O produto foi deletado com sucesso',
   })
   async remove(@Param('id', ParseIntPipe) id: number) {
-    console.log('Deleting product with ID:', id);
     return this.productsService.remove(id);
   }
 
@@ -39,22 +59,32 @@ export class ProductsController {
   @ApiOperation({ summary: 'Atualizar um produto' })
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
+  @ApiBearerAuth('ADMIN')
   @ApiBody({ type: CreateProductDto })
   @ApiResponse({
     status: 200,
     description: 'O produto foi atualizado com sucesso',
     type: CreateProductDto,
   })
-  async update(@Param('id', ParseIntPipe) id: number, @Body() updateProductDto: CreateProductDto) {
-    console.log('Updating product with ID:', id);
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateProductDto: CreateProductDto,
+  ) {
     return this.productsService.update(id, updateProductDto);
   }
 
   @Get('find')
   @ApiOperation({ summary: 'Encontrar produtos com base em critérios' })
   @ApiQuery({ name: 'name', required: false, description: 'Nome do produto' })
-  @ApiQuery({ name: 'category', required: false, description: 'Categoria do produto' })
-  async find(@Query('name') name?: string, @Query('category') category?: number) {
+  @ApiQuery({
+    name: 'category',
+    required: false,
+    description: 'Categoria do produto',
+  })
+  async find(
+    @Query('name') name?: string,
+    @Query('category') category?: number,
+  ) {
     if (name && category) {
       return this.productsService.findByNameAndCategoryId(name, category);
     } else if (name) {
@@ -65,6 +95,4 @@ export class ProductsController {
       return this.productsService.findAll();
     }
   }
-
-
 }

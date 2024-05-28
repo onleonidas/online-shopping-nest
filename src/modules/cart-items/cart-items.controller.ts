@@ -1,8 +1,9 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { CartItemsService } from './cart-items.service';
-import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CartItemDto } from './dtos/cartItem.dto';
 
+@ApiTags('Carrinho de compras')
 @Controller('cart-items')
 export class CartItemsController {
   constructor(private readonly cartItemsService: CartItemsService) {}

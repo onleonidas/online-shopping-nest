@@ -4,13 +4,12 @@ import { PrismaService } from 'src/database/prisma.service';
 
 @Injectable()
 export class CategoriesService {
-
-    constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
   create(category: CreateCategoryDto) {
     const newCategory = this.prisma.category.create({
-        data: category
-    })
+      data: category,
+    });
 
     return newCategory;
   }

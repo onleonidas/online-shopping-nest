@@ -4,12 +4,11 @@ import { PrismaService } from 'src/database/prisma.service';
 
 @Injectable()
 export class CartItemsService {
-
-    constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
   async create(cartItem: CartItemDto) {
     const newCartItem = await this.prisma.cartItem.create({
-        data: cartItem
+      data: cartItem,
     });
 
     return newCartItem;

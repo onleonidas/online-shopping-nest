@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';;
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/modules/users/users.service';
 import { PrismaService } from 'src/database/prisma.service';
@@ -25,15 +25,16 @@ export class AuthService {
   }
 
   async login(user: any) {
-
     const currentUser = await this.usersService.findByEmail(user.email);
     if (!currentUser) {
       throw new UnauthorizedException('User not found');
     }
 
-    console.log('user', user);
-    const payload = { username: currentUser.email, sub: currentUser.cpf, roles: currentUser.roles};
-    console.log('payloard', payload);
+    const payload = {
+      username: currentUser.email,
+      sub: currentUser.cpf,
+      roles: currentUser.roles,
+    };
     return {
       access_token: this.jwtService.sign(payload),
       role: currentUser.roles,
