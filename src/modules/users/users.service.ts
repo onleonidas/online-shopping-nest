@@ -53,4 +53,12 @@ export class UsersService {
             },
         });
     }
+
+    async findByCpf(cpf: string) {
+        return await this.prisma.user.findUnique({
+            where: {
+                cpf: cpf
+            },
+        });
+    }
 }

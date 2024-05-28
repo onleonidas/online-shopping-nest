@@ -4,8 +4,16 @@ import { PrismaService } from 'src/database/prisma.service';
 
 @Injectable()
 export class ClientsService {
-
+    
     constructor (private prisma: PrismaService) {}
+    
+    findByCpf(clientId: string) {
+        return this.prisma.client.findUnique({
+            where: {
+                userId: clientId
+            },
+        });
+    }
 
     async create(client: ClientDTO) {
         const userExists = await this.prisma.user.findUnique({

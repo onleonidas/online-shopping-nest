@@ -18,7 +18,6 @@ import { AuthGuard } from './auth/auth.guard';
 import { PrismaModule } from './database/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
 
-
 @Module({
   imports: [UsersModule, ClientsModule, ShoppingCartsModule, AdminsModule, JwtModule, PrismaModule, AuthModule, OrdersModule, ShoppingCartsModule, AdressesModule, ProductsModule, OrderItemsModule, CartItemsModule, CategoriesModule],
   controllers: [AppController],

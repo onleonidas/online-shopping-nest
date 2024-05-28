@@ -21,5 +21,5 @@ export class OrderItemDto {
     product_description: string;
 
     @ApiProperty({ example: '1', description: 'Categoria do produto' })
-    product_category: number;
+    categoryId?: number;
 }

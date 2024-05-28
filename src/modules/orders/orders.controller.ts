@@ -1,6 +1,6 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Put } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import { CreateOrderDto } from './dtos/order.dto';
+import { CreateOrderDto, OrderDTO } from './dtos/order.dto';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('orders')
@@ -18,4 +18,21 @@ export class OrdersController {
   create(@Body() order: CreateOrderDto) {
     return this.ordersService.create(order);
   }
+
+
+  @Put('finalizar-pedido')
+  @ApiOperation({ summary: 'Finalizar um pedido/compra' })
+  @ApiBody({ type: OrderDTO })
+  @ApiResponse({
+    status: 200,
+    description: 'O status do pedido foi atualizado com sucesso',
+    type: OrderDTO,
+  })
+  updateStatus(@Body() order: OrderDTO) {
+    console.log(order);
+    return this.ordersService.updateStatus(order);
+  }
+
+  
+
 }

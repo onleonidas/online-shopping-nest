@@ -6,6 +6,21 @@ import { CartItemDto } from '../cart-items/dtos/cartItem.dto';
 @Injectable()
 export class ShoppingCartsService {
 
+  async getCartItems(id: number) {
+    id = parseInt(id.toString());
+    const cartItems = await this.prisma.cartItem.findMany({
+      where: {
+        shoppingCartId: id
+      },
+      include: {
+        product: true
+      }
+    });
+
+
+    return cartItems;
+  }
+
   
   constructor(private prisma: PrismaService) {}
 
