@@ -19,8 +19,8 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Roles } from 'src/auth/roles.decorator';
-import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from '@src/auth/roles.decorator';
+import { RolesGuard } from '@src/auth/roles.guard';
 
 @ApiTags('Produtos')
 @Controller('products')

@@ -30,7 +30,7 @@ describe('AuthController', () => {
 
   describe('signIn', () => {
     it('should return a token when credentials are valid', async () => {
-      const signInDto: SignInDto = { email: 'test', password: 'test' };
+      const signInDto: SignInDto = { email: 'client@gmail.com', password: '123' };
 
       const result = await authController.signIn(signInDto);
 
