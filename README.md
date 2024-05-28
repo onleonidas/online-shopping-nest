@@ -8,15 +8,20 @@
 </p>
 
 
+## 1. Clone this repository
+
+```bash
+$ git clone https://github.com/onleonidas/online-shopping-nest
+```
 
 
-## Installation
+## 2. Installation
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+## 3. Running the app
 
 ```bash
 # development
@@ -29,14 +34,14 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+## 4. Test
 
 ```bash
 # unit tests
 $ npm run test
 ```
 
-## Swagger Api Doc
+## 5. Swagger Api Doc
 ```bash
 # npm run start:dev
 $ and open http://localhost:3000/api-docs
