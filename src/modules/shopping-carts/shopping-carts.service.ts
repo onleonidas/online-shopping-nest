@@ -24,6 +24,13 @@ export class ShoppingCartsService {
     return newShoppingCart;
   }
 
+
+  /**
+   * Function to get the items of a shopping cart
+   * @param id
+   * @returns
+   * 
+   */
   async getCartItems(id: number) {
     id = parseInt(id.toString());
     const cartItems = await this.prisma.cartItem.findMany({
@@ -44,6 +51,12 @@ export class ShoppingCartsService {
     });
   }
 
+
+  /**
+   * Function to create an order from a shopping cart
+   * @param shoppingCart 
+   * @returns 
+   */
   async createOrderFromCart(shoppingCart: ShoppingCartDto) {
     const cartItems = await this.getCartItems(shoppingCart.id);
 
@@ -75,6 +88,7 @@ export class ShoppingCartsService {
       categoryId: cartItem.product.categoryId,
     }));
 
+    // Create order items
     for (const orderItem of orderItems) {
       await this.orderItemsServices.create(orderItem);
     }

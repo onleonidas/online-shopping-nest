@@ -6,6 +6,11 @@ import { PrismaService } from 'src/database/prisma.service';
 export class OrdersService {
   constructor(private prisma: PrismaService) {}
 
+  /**
+   * Function to create a new order
+   * @param order 
+   * @returns 
+   */
   async create(order: CreateOrderDto) {
     const newOrder = await this.prisma.order.create({
       data: order,
@@ -13,6 +18,11 @@ export class OrdersService {
     return newOrder;
   }
 
+  /**
+   * Function to update the status of an order to 'Concluído'
+   * @param order 
+   * @returns 
+   */
   updateStatus(order: OrderDTO) {
     return this.prisma.order.update({
       where: {
@@ -24,6 +34,11 @@ export class OrdersService {
     });
   }
 
+  /**
+   * Function to get all orders
+   * @param id 
+   * @returns 
+   */
   async getOrders(id: number) {
     const orders = await this.prisma.order.findUnique({
       where: {
