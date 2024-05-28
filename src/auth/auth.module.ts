@@ -5,7 +5,7 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
-import { PrismaService } from 'src/database/prisma.service';
+import { PrismaService } from '@src/database/prisma.service';
 import { LocalStrategy } from './local.strategy';
 import { UsersService } from 'src/modules/users/users.service';
 
